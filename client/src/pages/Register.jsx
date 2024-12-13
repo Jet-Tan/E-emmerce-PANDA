@@ -66,7 +66,7 @@ const Register = () => {
   return (
     <section className="w-full container mx-auto px-2">
       <div className="bg-white my-4 w-full max-w-lg mx-auto rounded p-7">
-        <p>Welcome to Binkeyit</p>
+        <p>Welcome to Panda</p>
 
         <form className="grid gap-4 mt-6" onSubmit={handleSubmit}>
           <div className="grid gap-1">
