@@ -519,3 +519,116 @@ export async function userDetails(request, response) {
     });
   }
 }
+
+export async function userAll(request, response) {
+  try {
+    const allUsers = await UserModel.find();
+    return response.status(200).json({
+      error: false,
+      message: "user all",
+      data: allUsers,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return response.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+      error: true,
+    });
+  }
+}
+
+export async function deleteUser(request, response) {
+  try {
+    // Lấy userId từ request (có thể từ token, params hoặc body)
+    const userId = request.userId;
+
+    console.log("User ID to delete:", userId);
+
+    if (!userId) {
+      return response.status(400).json({
+        message: "User ID is required",
+        error: true,
+        success: false,
+      });
+    }
+
+    const deletedUser = await UserModel.findByIdAndDelete(userId);
+
+    if (!deletedUser) {
+      return response.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    return response.json({
+      message: "User deleted successfully",
+      data: deletedUser,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+
+    return response.status(500).json({
+      message: "Something is wrong",
+      error: true,
+      success: false,
+    });
+  }
+}
+
+export async function updateUser(request, response) {
+  try {
+    const userId = request.userId; // Lấy `userId` từ token hoặc request
+    const updates = request.body; // Dữ liệu cập nhật từ body của yêu cầu
+
+    if (!userId) {
+      return response.status(400).json({
+        message: "User ID is required",
+        error: true,
+        success: false,
+      });
+    }
+
+    if (!updates || Object.keys(updates).length === 0) {
+      return response.status(400).json({
+        message: "No updates provided",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Tìm và cập nhật người dùng
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      userId,
+      { $set: updates }, // Chỉ cập nhật các trường được truyền
+      { new: true, runValidators: true } // Trả về document đã cập nhật
+    ).select("-password -refresh_token"); // Không trả về trường nhạy cảm
+
+    if (!updatedUser) {
+      return response.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    return response.status(200).json({
+      message: "User updated successfully",
+      data: updatedUser,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return response.status(500).json({
+      message: "Something is wrong",
+      error: true,
+      success: false,
+    });
+  }
+}
