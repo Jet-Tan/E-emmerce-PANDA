@@ -29,7 +29,7 @@ const AddToCartButton = ({ data }) => {
           productId: data?._id,
         },
       });
-
+      console.log("check", response);
       const { data: responseData } = response;
 
       if (responseData.success) {
@@ -37,6 +37,8 @@ const AddToCartButton = ({ data }) => {
         if (fetchCartItem) {
           fetchCartItem();
         }
+      } else if (responseData.error) {
+        toast.error(responseData.error);
       }
     } catch (error) {
       AxiosToastError(error);

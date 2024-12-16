@@ -293,8 +293,10 @@ export const searchProduct = async (request, response) => {
           $text: {
             $search: search,
           },
+          publish: true, // Chỉ sản phẩm được xuất bản
         }
-      : {};
+      : { publish: true };
+
     console.log("Query:", query);
 
     const skip = (page - 1) * limit;
