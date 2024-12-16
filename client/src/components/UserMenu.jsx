@@ -91,7 +91,17 @@ const UserMenu = ({ close }) => {
             </Link>
           </>
         )}
-
+        {isAdmin(user.role) && (
+          <>
+            <Link
+              to="/dashboard/user"
+              onClick={handleClose}
+              className="px-2 hover:bg-orange-200 py-1"
+            >
+              User
+            </Link>
+          </>
+        )}
         <Link
           to="/dashboard/myorders"
           onClick={handleClose}

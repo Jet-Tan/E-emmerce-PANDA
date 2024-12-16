@@ -279,6 +279,7 @@ export const deleteProductDetails = async (request, response) => {
 export const searchProduct = async (request, response) => {
   try {
     let { search, page, limit } = request.body;
+    console.log("request.body:", request.body);
 
     if (!page) {
       page = 1;
@@ -294,6 +295,7 @@ export const searchProduct = async (request, response) => {
           },
         }
       : {};
+    console.log("Query:", query);
 
     const skip = (page - 1) * limit;
 
@@ -305,7 +307,7 @@ export const searchProduct = async (request, response) => {
         .populate("category subCategory"),
       ProductModel.countDocuments(query),
     ]);
-
+    console.log("123", data, dataCount);
     return response.json({
       message: "Product data",
       error: false,
