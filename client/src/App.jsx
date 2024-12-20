@@ -78,9 +78,9 @@ function App() {
       setInput("");
 
       try {
-        const response = await axios.post("http://127.0.0.1:5000/api",{
-          "content":input
-        })
+        const response = await axios.post("http://127.0.0.1:5000/api", {
+          content: input,
+        });
         console.log(response);
         const botMessage = { text: response.data.message, sender: "bot" };
         setMessages((prevMessages) => [...prevMessages, botMessage]);
@@ -107,33 +107,31 @@ function App() {
       <Toaster />
       {location.pathname !== "/checkout" && <CartMobileLink />}
       <div className={`chatbot ${chatOpen ? "open" : ""}`}>
-  <div className="chatbot-header" onClick={() => setChatOpen(!chatOpen)}>
-  🐼 Chat with Panda!
-  </div>
-  {chatOpen && (
-    <div className="chatbot-body">
-      <div className="messages">
-        {messages.map((msg, index) => (
-          <div key={index} className={`message-container ${msg.sender}`}>
-            <div className={`message ${msg.sender}`}>
-              {msg.text}
+        <div className="chatbot-header" onClick={() => setChatOpen(!chatOpen)}>
+          🐼 Chat with Panda!
+        </div>
+        {chatOpen && (
+          <div className="chatbot-body">
+            <div className="messages">
+              {messages.map((msg, index) => (
+                <div key={index} className={`message-container ${msg.sender}`}>
+                  <div className={`message ${msg.sender}`}>{msg.text}</div>
+                </div>
+              ))}
+            </div>
+            <div className="chat-input">
+              <input
+                type="text"
+                placeholder="Ask me something..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
+              />
+              <button onClick={handleSendMessage}>Send</button>
             </div>
           </div>
-        ))}
+        )}
       </div>
-      <div className="chat-input">
-        <input
-          type="text"
-          placeholder="Ask me something..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
-        />
-        <button onClick={handleSendMessage}>Send</button>
-      </div>
-    </div>
-  )}
-</div>
     </GlobalProvider>
   );
 }

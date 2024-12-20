@@ -4,6 +4,7 @@ import AxiosToastError from "../utils/AxiosToastError";
 import Axios from "../utils/Axios";
 import { HiPencil } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
+import toast from "react-hot-toast";
 
 const UserAdmin = () => {
   const [userData, setUserData] = useState([]);
@@ -29,9 +30,22 @@ const UserAdmin = () => {
     // Thực hiện logic sửa (ví dụ: mở modal để chỉnh sửa thông tin người dùng)
   };
 
-  const handleDelete = (userId) => {
-    console.log("Delete user with ID:", userId);
-    // Thực hiện logic xóa (ví dụ: gọi API để xóa người dùng theo `userId`)
+  const handleDelete = async (userId) => {
+    try {
+      const response = await Axios({
+        ...SummaryApi.deleteUser,
+        data: { _id: userId },
+      });
+      const { data: responseData } = response;
+      if (response.data.success) {
+        toast.success(responseData.message);
+        setUserData((prevData) =>
+          prevData.filter((user) => user._id !== userId)
+        );
+      }
+    } catch (e) {
+      AxiosToastError(e);
+    }
   };
 
   useEffect(() => {

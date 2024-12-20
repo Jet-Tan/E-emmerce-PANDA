@@ -4,11 +4,11 @@
     bottom: 60px;
     right: 20px;
     width: 350px;
-    background: rgba(255, 255, 255, 0.2); /* Nền trong suốt với opacity */
-    border: 1px solid rgba(255, 255, 255, 0.3); /* Viền nhẹ */
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 12px;
-    backdrop-filter: blur(12px); /* Hiệu ứng mờ */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Bóng đổ */
+    backdrop-filter: blur(12px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
     overflow: hidden;
     transition: transform 0.4s ease, box-shadow 0.3s ease;
     transform: translateY(100%);

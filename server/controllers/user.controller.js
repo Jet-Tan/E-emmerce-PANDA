@@ -541,12 +541,11 @@ export async function userAll(request, response) {
 
 export async function deleteUser(request, response) {
   try {
-    // Lấy userId từ request (có thể từ token, params hoặc body)
-    const userId = request.userId;
+    const { _id } = request.body;
 
-    console.log("User ID to delete:", userId);
+    console.log("User ID to delete:", _id);
 
-    if (!userId) {
+    if (!_id) {
       return response.status(400).json({
         message: "User ID is required",
         error: true,
@@ -554,7 +553,7 @@ export async function deleteUser(request, response) {
       });
     }
 
-    const deletedUser = await UserModel.findByIdAndDelete(userId);
+    const deletedUser = await UserModel.deleteOne({ _id: _id });
 
     if (!deletedUser) {
       return response.status(404).json({

@@ -157,6 +157,10 @@ const SummaryApi = {
     url: "/api/user/user-all",
     method: "get",
   },
+  deleteUser: {
+    url: "/api/user/delete-user",
+    method: "delete",
+  },
 };
 
 export default SummaryApi;
