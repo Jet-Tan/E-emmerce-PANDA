@@ -43,9 +43,19 @@ const MyOrders = () => {
               <p className="text-lg font-medium mt-1">
                 {order.product_details.name}
               </p>
+              {/* Hiển thị trạng thái thanh toán */}
+              <p
+                className={`text-sm mt-2 font-semibold ${
+                  order.payment_status === "paid"
+                    ? "text-green-600" // Xanh nếu đã thanh toán
+                    : "text-red-600" // Đỏ nếu chưa thanh toán
+                }`}
+              >
+                {order.payment_status === "paid" ? "Paid" : "Pending"}
+              </p>
             </div>
 
-            {/* Tổng quan giá tiền (nếu có thêm) */}
+            {/* Tổng quan giá tiền */}
             <div className="text-right">
               <p className="text-gray-600 text-sm">Total Price</p>
               <p className="text-green-600 font-semibold text-lg">
