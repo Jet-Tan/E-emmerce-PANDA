@@ -2,7 +2,7 @@
 .chatbot {
     position: fixed;
     bottom: 60px;
-    right: 20px;
+    left: 10px;
     width: 350px;
     background: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);

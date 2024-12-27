@@ -6,7 +6,7 @@ import { FaCaretRight } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import AddToCartButton from "./AddToCartButton";
 import { pricewithDiscount } from "../utils/PriceWithDiscount";
-import imageEmpty from "../assets/empty_cart.webp";
+import imageEmpty from "../assets/empty_cart.jpg";
 import toast from "react-hot-toast";
 import { DisplayPriceInUSD } from "../utils/DisplayPriceInUSD";
 
@@ -28,7 +28,7 @@ const DisplayCartItem = ({ close }) => {
   };
   return (
     <section className="bg-gray-900 fixed top-0 left-0 right-0 bottom-0 bg-opacity-70 z-50">
-      <div className="bg-white w-full max-w-lg min-h-screen ml-auto rounded-xl shadow-xl overflow-hidden">
+      <div className="bg-white w-full max-w-lg min-h-screen ml-auto  shadow-xl overflow-hidden">
         <div className="flex items-center p-4 shadow-md gap-3 justify-between">
           <h2 className="text-xl font-semibold text-gray-800 flex-grow">
             Shopping Cart
@@ -45,7 +45,7 @@ const DisplayCartItem = ({ close }) => {
           {/***display items */}
           {cartItem[0] ? (
             <>
-              <div className="flex items-center justify-between px-4 py-2 bg-blue-100 text-blue-500 rounded-full">
+              <div className="flex items-center justify-between px-4 py-2 bg-blue-100 text-blue-500 ">
                 <p>Your total savings</p>
                 <p>{DisplayPriceInUSD(notDiscountTotalPrice - totalPrice)}</p>
               </div>
