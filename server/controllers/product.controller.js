@@ -328,3 +328,45 @@ export const searchProduct = async (request, response) => {
     });
   }
 };
+
+// Giả sử khi một khách hàng mua hàng, bạn sẽ giảm số lượng kho
+export const updateStockAfterPurchase = async (
+  productId,
+  quantityPurchased
+) => {
+  try {
+    const product = await ProductModel.findOne({ _id: productId });
+
+    if (!product) {
+      return {
+        message: "Product not found",
+        success: false,
+      };
+    }
+
+    // Cập nhật lại số lượng tồn kho
+    const newStock = product.stock - quantityPurchased;
+
+    // Nếu còn sản phẩm, cập nhật lại kho
+    if (newStock > 0) {
+      product.stock = newStock;
+      await product.save();
+    } else {
+      // Nếu kho hết hàng, đặt trạng thái là hết hàng (hoặc xóa khỏi gian hàng)
+      product.stock = 0;
+      product.publish = false; // Hoặc set publish = false để ẩn sản phẩm khỏi gian hàng
+      await product.save();
+    }
+
+    return {
+      message: "Product stock updated successfully",
+      success: true,
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      message: error.message,
+      success: false,
+    };
+  }
+};

@@ -47,8 +47,8 @@ const MyOrders = () => {
               <p
                 className={`text-sm mt-2 font-semibold ${
                   order.payment_status === "paid"
-                    ? "text-green-600" // Xanh nếu đã thanh toán
-                    : "text-red-600" // Đỏ nếu chưa thanh toán
+                    ? "text-green-600"
+                    : "text-red-600"
                 }`}
               >
                 {order.payment_status === "paid" ? "Paid" : "Pending"}

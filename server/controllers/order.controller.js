@@ -214,3 +214,39 @@ export async function getOrderDetailsController(request, response) {
     });
   }
 }
+
+export async function getUserOrdersByNameController(request, response) {
+  try {
+    // Get the username from the request query
+    const { username } = request.query;
+
+    // Find the user by name
+    const user = await UserModel.findOne({ name: username });
+
+    if (!user) {
+      return response.status(404).json({
+        message: "User not found",
+        error: true,
+        success: false,
+      });
+    }
+
+    // Retrieve the orders of the user
+    const orderlist = await OrderModel.find({ userId: user._id })
+      .sort({ createdAt: -1 }) // Sort orders by latest date first
+      .populate("delivery_address"); // Populate delivery address if necessary
+
+    return response.json({
+      message: "Orders found",
+      data: orderlist,
+      error: false,
+      success: true,
+    });
+  } catch (error) {
+    return response.status(500).json({
+      message: error.message || error,
+      error: true,
+      success: false,
+    });
+  }
+}
