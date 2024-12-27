@@ -275,7 +275,7 @@ export const deleteProductDetails = async (request, response) => {
   }
 };
 
-//search product
+
 export const searchProduct = async (request, response) => {
   try {
     let { search, page, limit } = request.body;
@@ -329,7 +329,7 @@ export const searchProduct = async (request, response) => {
   }
 };
 
-// Giả sử khi một khách hàng mua hàng, bạn sẽ giảm số lượng kho
+
 export const updateStockAfterPurchase = async (
   productId,
   quantityPurchased
