@@ -27,10 +27,12 @@ const DisplayCartItem = ({ close }) => {
     toast("Please Login");
   };
   return (
-    <section className="bg-neutral-900 fixed top-0 bottom-0 right-0 left-0 bg-opacity-70 z-50">
-      <div className="bg-white w-full max-w-sm min-h-screen max-h-screen ml-auto">
+    <section className="bg-gray-900 fixed top-0 left-0 right-0 bottom-0 bg-opacity-70 z-50">
+      <div className="bg-white w-full max-w-lg min-h-screen ml-auto rounded-xl shadow-xl overflow-hidden">
         <div className="flex items-center p-4 shadow-md gap-3 justify-between">
-          <h2 className="font-semibold">Cart</h2>
+          <h2 className="text-xl font-semibold text-gray-800 flex-grow">
+            Shopping Cart
+          </h2>
           <Link to={"/"} className="lg:hidden">
             <IoClose size={25} />
           </Link>
