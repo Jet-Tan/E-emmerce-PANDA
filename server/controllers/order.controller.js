@@ -194,7 +194,7 @@ export async function webhookStripe(request, response) {
 
 export async function getOrderDetailsController(request, response) {
   try {
-    const userId = request.userId; // order id
+    const userId = request.userId;
 
     const orderlist = await OrderModel.find({ userId: userId })
       .sort({ createdAt: -1 })
@@ -215,36 +215,22 @@ export async function getOrderDetailsController(request, response) {
   }
 }
 
-export async function getUserOrdersByNameController(request, response) {
+export async function getAllOrdersController(request, response) {
   try {
-    // Get the username from the request query
-    const { username } = request.query;
-
-    // Find the user by name
-    const user = await UserModel.findOne({ name: username });
-
-    if (!user) {
-      return response.status(404).json({
-        message: "User not found",
-        error: true,
-        success: false,
-      });
-    }
-
-    // Retrieve the orders of the user
-    const orderlist = await OrderModel.find({ userId: user._id })
-      .sort({ createdAt: -1 }) // Sort orders by latest date first
-      .populate("delivery_address"); // Populate delivery address if necessary
+    const orders = await OrderModel.find()
+      .sort({ createdAt: -1 })
+      .populate("userId", "name email")
+      .populate("delivery_address");
 
     return response.json({
-      message: "Orders found",
-      data: orderlist,
+      message: "All orders retrieved successfully",
+      data: orders,
       error: false,
       success: true,
     });
   } catch (error) {
     return response.status(500).json({
-      message: error.message || error,
+      message: error.message || "Internal Server Error",
       error: true,
       success: false,
     });

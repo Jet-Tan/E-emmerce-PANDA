@@ -24,6 +24,7 @@ import CheckoutPage from "../pages/CheckoutPage";
 import Success from "../pages/Success";
 import Cancel from "../pages/Cancel";
 import UserAdmin from "../pages/UserAdmin";
+import OrderAdmin from "../pages/OrderAdmin";
 
 const router = createBrowserRouter([
   {
@@ -115,6 +116,14 @@ const router = createBrowserRouter([
             element: (
               <AdminPermision>
                 <UserAdmin />
+              </AdminPermision>
+            ),
+          },
+          {
+            path: "order",
+            element: (
+              <AdminPermision>
+                <OrderAdmin />
               </AdminPermision>
             ),
           },

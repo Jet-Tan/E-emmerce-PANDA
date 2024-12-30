@@ -5,7 +5,7 @@ import {
   getOrderDetailsController,
   paymentController,
   webhookStripe,
-  getUserOrdersByNameController,
+  getAllOrdersController,
 } from "../controllers/order.controller.js";
 
 const orderRouter = Router();
@@ -14,5 +14,5 @@ orderRouter.post("/cash-on-delivery", auth, CashOnDeliveryOrderController);
 orderRouter.post("/checkout", auth, paymentController);
 orderRouter.post("/webhook", webhookStripe);
 orderRouter.get("/order-list", auth, getOrderDetailsController);
-orderRouter.get("/order-admin", getUserOrdersByNameController);
+orderRouter.get("/order-all", auth, getAllOrdersController);
 export default orderRouter;
