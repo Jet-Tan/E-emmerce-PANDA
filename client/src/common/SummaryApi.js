@@ -165,6 +165,14 @@ const SummaryApi = {
     url: "/api/user/delete-user",
     method: "delete",
   },
+  getStarsTotal: {
+    url: "/api/stars/stars-total",
+    method: "get",
+  },
+  getStarsChart: {
+    url: "/api/stars/stars-chart",
+    method: "get",
+  },
 };
 
 export default SummaryApi;

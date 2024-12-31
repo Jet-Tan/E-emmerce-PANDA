@@ -37,21 +37,18 @@ const OrderAdmin = () => {
         <h1 className="text-2xl">Orders</h1>
       </div>
 
-      {/* Hiển thị loader khi đang tải */}
       {loading && (
         <div className="flex justify-center items-center h-64">
           <p className="text-gray-600">Loading orders...</p>
         </div>
       )}
 
-      {/* Khi không có dữ liệu */}
       {!loading && !orders.length && (
         <div className="flex justify-center items-center h-64">
           <NoData />
         </div>
       )}
 
-      {/* Hiển thị bảng danh sách đơn hàng */}
       {!loading && orders.length > 0 && (
         <div className="p-4">
           <div className="overflow-x-auto">
