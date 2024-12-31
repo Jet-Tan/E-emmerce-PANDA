@@ -11,7 +11,7 @@ const resend = new Resend(process.env.RESEND_API);
 const sendEmail = async ({ sendTo, subject, html }) => {
   try {
     const { data, error } = await resend.emails.send({
-      from: "Panda <noreply@tan.canbds.com.oi>",
+      from: "Panda <onboarding@resend.dev>",
       to: sendTo,
       subject: subject,
       html: html,

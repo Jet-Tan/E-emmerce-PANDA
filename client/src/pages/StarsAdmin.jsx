@@ -141,7 +141,7 @@ const StarsAdmin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 ">
+    <div className="min-h-screen bg-gray-100">
       <div className="bg-white shadow-md p-4 font-semibold text-gray-800">
         <h1 className="text-2xl">Dashboard Statistics</h1>
       </div>
