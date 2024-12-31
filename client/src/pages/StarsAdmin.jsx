@@ -13,11 +13,10 @@ import {
   Legend,
 } from "chart.js";
 
-// Đăng ký các thành phần của Chart.js mà bạn sẽ sử dụng
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement, // Đăng ký BarElement cho biểu đồ cột
+  BarElement,
   Title,
   Tooltip,
   Legend
@@ -86,10 +85,10 @@ const StarsAdmin = () => {
           {
             label: "User Registrations",
             data: chartData.userStats.map((item) => item.count),
-            backgroundColor: "rgba(0, 0, 255, 0.2)", // Định nghĩa màu cột
+            backgroundColor: "rgba(0, 0, 255, 0.2)",
             borderColor: "blue",
             borderWidth: 1,
-            hoverBackgroundColor: "rgba(0, 0, 255, 0.5)", // Màu khi hover vào cột
+            hoverBackgroundColor: "rgba(0, 0, 255, 0.5)",
           },
         ],
       }
@@ -102,14 +101,14 @@ const StarsAdmin = () => {
           {
             label: "Orders",
             data: chartData.orderStats.map((item) => item.count),
-            backgroundColor: "rgba(0, 255, 0, 0.2)", // Màu cột cho orders
+            backgroundColor: "rgba(0, 255, 0, 0.2)",
             borderColor: "green",
             borderWidth: 1,
           },
           {
             label: "Revenue",
             data: chartData.orderStats.map((item) => item.revenue),
-            backgroundColor: "rgba(255, 165, 0, 0.2)", // Màu cột cho doanh thu
+            backgroundColor: "rgba(255, 165, 0, 0.2)",
             borderColor: "orange",
             borderWidth: 1,
           },
@@ -117,7 +116,6 @@ const StarsAdmin = () => {
       }
     : null;
 
-  // Cấu hình biểu đồ với các option để cải thiện hiển thị
   const chartOptions = {
     responsive: true,
     plugins: {
@@ -129,7 +127,7 @@ const StarsAdmin = () => {
       x: {
         title: {
           display: true,
-          text: "Date", // Đặt tiêu đề cho trục x
+          text: "Date",
         },
       },
       y: {
@@ -171,15 +169,15 @@ const StarsAdmin = () => {
         />
       </div>
 
-      <div className="mt-12 mb-12 px-6">
+      <div className="mt-12 mb-12 px-6 grid grid-cols-2 gap-6">
         {userChartData && (
-          <div className="mb-12">
+          <div className="flex flex-col items-center">
             <h2 className="text-xl font-semibold mb-4">User Registrations</h2>
             <Bar data={userChartData} options={chartOptions} />
           </div>
         )}
         {orderChartData && (
-          <div>
+          <div className="flex flex-col items-center">
             <h2 className="text-xl font-semibold mb-4">Orders & Revenue</h2>
             <Bar data={orderChartData} options={chartOptions} />
           </div>
