@@ -40,7 +40,7 @@ app.use(
 );
 
 // Port Configuration
-const PORT = process.env.PORT || 8080;
+const PORT = 8080 || process.env.PORT;
 
 // Routes
 app.get("/", (req, res) => {
@@ -58,7 +58,6 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/stars", starsRouter);
-
 // Connect to Database and Start Server
 connectDB()
   .then(() => {
