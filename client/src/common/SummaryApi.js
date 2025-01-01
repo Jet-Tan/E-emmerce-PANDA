@@ -153,6 +153,10 @@ const SummaryApi = {
     url: "/api/order/order-list",
     method: "get",
   },
+  getOrderAll: {
+    url: "/api/order/order-all",
+    method: "get",
+  },
   getUserAll: {
     url: "/api/user/user-all",
     method: "get",
@@ -160,6 +164,14 @@ const SummaryApi = {
   deleteUser: {
     url: "/api/user/delete-user",
     method: "delete",
+  },
+  getStarsTotal: {
+    url: "/api/stars/stars-total",
+    method: "get",
+  },
+  getStarsChart: {
+    url: "/api/stars/stars-chart",
+    method: "get",
   },
 };
 

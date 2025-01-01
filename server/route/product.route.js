@@ -9,6 +9,7 @@ import {
   getProductDetails,
   searchProduct,
   updateProductDetails,
+  updateStockAfterPurchase,
 } from "../controllers/product.controller.js";
 import { admin } from "../middleware/Admin.js";
 
@@ -28,5 +29,7 @@ productRouter.put("/update-product-details", auth, admin, updateProductDetails);
 productRouter.delete("/delete-product", auth, admin, deleteProductDetails);
 
 productRouter.post("/search-product", searchProduct);
+
+productRouter.put("/update-stock", updateStockAfterPurchase);
 
 export default productRouter;
