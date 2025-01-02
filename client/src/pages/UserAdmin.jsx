@@ -5,9 +5,12 @@ import Axios from "../utils/Axios";
 import { HiPencil } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
 import toast from "react-hot-toast";
+import EditUser from "../components/EditUser";
 
 const UserAdmin = () => {
   const [userData, setUserData] = useState([]);
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   const fetchUserData = async () => {
     try {
@@ -16,7 +19,6 @@ const UserAdmin = () => {
       });
       const { data: responseData } = response;
 
-      console.log("product page ", responseData);
       if (responseData.success) {
         setUserData(responseData.data);
       }
@@ -26,8 +28,8 @@ const UserAdmin = () => {
   };
 
   const handleEdit = (user) => {
-    console.log("Edit user:", user);
-    // Thực hiện logic sửa (ví dụ: mở modal để chỉnh sửa thông tin người dùng)
+    setSelectedUser(user);
+    setEditModalOpen(true); // Mở modal
   };
 
   const handleDelete = async (userId) => {
@@ -48,14 +50,27 @@ const UserAdmin = () => {
     }
   };
 
+  const closeEditModal = () => {
+    setEditModalOpen(false);
+    setSelectedUser(null);
+  };
+
   useEffect(() => {
     fetchUserData();
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">User List</h1>
-      <div className="overflow-x-auto">
+    <section className="">
+      <div className="p-2 \bg-white shadow-md flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">User</h1>
+        <button
+          // onClick={() => setOpenAddSubCategory(true)}
+          className="text-sm border border-primary-200 hover:bg-primary-200 px-3 py-1 rounded"
+        >
+          Add User
+        </button>
+      </div>
+      <div className="overflow-auto w-full max-w-[95vw] p-5">
         <table className="min-w-full table-auto border-collapse border border-gray-200 text-sm lg:text-base">
           <thead className="bg-gray-100">
             <tr>
@@ -67,16 +82,7 @@ const UserAdmin = () => {
                 Email
               </th>
               <th className="border border-gray-300 px-4 py-2 text-left">
-                Address
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
                 Role
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Status
-              </th>
-              <th className="border border-gray-300 px-4 py-2 text-left">
-                Verify Email
               </th>
               <th className="border border-gray-300 px-4 py-2 text-center">
                 Action
@@ -97,34 +103,19 @@ const UserAdmin = () => {
                     {user.email || "N/A"}
                   </td>
                   <td className="border border-gray-300 px-4 py-2">
-                    {user.address_details?.length > 0
-                      ? user.address_details.join(", ")
-                      : "No address"}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {user.role || "N/A"}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {user.status || "Inactive"}
-                  </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {user.verify_email ? (
-                      <span className="text-green-600 font-semibold">TRUE</span>
-                    ) : (
-                      <span className="text-red-600 font-semibold">FALSE</span>
-                    )}
+                    {user.role || "USER"}
                   </td>
                   <td className="flex border border-gray-300 px-4 py-2 justify-center gap-2 md:gap-4 items-center flex-wrap">
                     <button
                       onClick={() => handleEdit(user)}
-                      className="p-2 bg-green-100 rounded-full hover:bg-green-200 hover:text-green-600 transition-colors duration-200 ease-in-out"
+                      className="p-2 bg-green-100 rounded-full hover:bg-green-200 hover:text-green-600"
                       aria-label="Edit"
                     >
                       <HiPencil size={16} />
                     </button>
                     <button
                       onClick={() => handleDelete(user._id)}
-                      className="p-2 bg-red-100 rounded-full text-red-500 hover:bg-red-200 hover:text-red-600 transition-colors duration-200 ease-in-out"
+                      className="p-2 bg-red-100 rounded-full text-red-500 hover:bg-red-200"
                       aria-label="Delete"
                     >
                       <MdDelete size={16} />
@@ -134,10 +125,7 @@ const UserAdmin = () => {
               ))
             ) : (
               <tr>
-                <td
-                  colSpan="8"
-                  className="border border-gray-300 px-4 py-2 text-center"
-                >
+                <td colSpan="5" className="border px-4 py-2 text-center">
                   No Users Found
                 </td>
               </tr>
@@ -145,7 +133,16 @@ const UserAdmin = () => {
           </tbody>
         </table>
       </div>
-    </div>
+
+      {/* Render Modal */}
+      {isEditModalOpen && selectedUser && (
+        <EditUser
+          close={closeEditModal}
+          userData={selectedUser}
+          fetchUserData={fetchUserData}
+        />
+      )}
+    </section>
   );
 };
 
