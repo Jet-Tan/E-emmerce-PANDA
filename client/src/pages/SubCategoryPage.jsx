@@ -6,7 +6,6 @@ import SummaryApi from "../common/SummaryApi";
 import DisplayTable from "../components/DisplayTable";
 import { createColumnHelper } from "@tanstack/react-table";
 import ViewImage from "../components/ViewImage";
-import { LuPencil } from "react-icons/lu";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi";
 import EditSubCategory from "../components/EditSubCategory";
@@ -17,6 +16,8 @@ const SubCategoryPage = () => {
   const [openAddSubCategory, setOpenAddSubCategory] = useState(false);
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(10);
   const columnHelper = createColumnHelper();
   const [ImageURL, setImageURL] = useState("");
   const [openEdit, setOpenEdit] = useState(false);
@@ -50,6 +51,18 @@ const SubCategoryPage = () => {
     fetchSubCategory();
   }, []);
 
+  // Change the page and update the currentPage state
+  const handlePageChange = (page) => {
+    if (page < 1 || page > Math.ceil(data.length / itemsPerPage)) return;
+    setCurrentPage(page);
+  };
+
+  // Get the orders to display for the current page
+  const displayedData = data.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   const column = [
     columnHelper.accessor("name", {
       header: "Name",
@@ -57,7 +70,6 @@ const SubCategoryPage = () => {
     columnHelper.accessor("image", {
       header: "Image",
       cell: ({ row }) => {
-        console.log("row");
         return (
           <div className="flex justify-center items-center">
             <img
@@ -139,9 +151,10 @@ const SubCategoryPage = () => {
       AxiosToastError(error);
     }
   };
+
   return (
     <section className="">
-      <div className="p-2   bg-white shadow-md flex items-center justify-between">
+      <div className="p-2 bg-white shadow-md flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Sub Category</h1>
         <button
           onClick={() => setOpenAddSubCategory(true)}
@@ -152,7 +165,7 @@ const SubCategoryPage = () => {
       </div>
 
       <div className="overflow-auto w-full max-w-[95vw]">
-        <DisplayTable data={data} column={column} />
+        <DisplayTable data={displayedData} column={column} />
       </div>
 
       {openAddSubCategory && (
@@ -179,6 +192,27 @@ const SubCategoryPage = () => {
           confirm={handleDeleteSubCategory}
         />
       )}
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center gap-4 py-4">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-2 bg-gray-300 rounded disabled:bg-gray-200"
+        >
+          Prev
+        </button>
+        <span>
+          Page {currentPage} of {Math.ceil(data.length / itemsPerPage)}
+        </span>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(data.length / itemsPerPage)}
+          className="px-4 py-2 bg-gray-300 rounded disabled:bg-gray-200"
+        >
+          Next
+        </button>
+      </div>
     </section>
   );
 };

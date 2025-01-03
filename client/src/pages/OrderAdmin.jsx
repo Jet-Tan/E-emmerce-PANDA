@@ -7,6 +7,8 @@ import Axios from "../utils/Axios";
 const OrderAdmin = () => {
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); // Added for page tracking
+  const [itemsPerPage] = useState(10); // Items per page constant
 
   const fetchOrderData = async () => {
     try {
@@ -31,6 +33,18 @@ const OrderAdmin = () => {
     fetchOrderData();
   }, []);
 
+  // Handle changing the page
+  const handlePageChange = (page) => {
+    if (page < 1 || page > Math.ceil(orders.length / itemsPerPage)) return;
+    setCurrentPage(page);
+  };
+
+  // Get the current page's orders data
+  const currentOrders = orders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="bg-white shadow-md p-4 font-semibold text-gray-800">
@@ -49,7 +63,7 @@ const OrderAdmin = () => {
         </div>
       )}
 
-      {!loading && orders.length > 0 && (
+      {!loading && currentOrders.length > 0 && (
         <div className="p-4">
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white rounded-md shadow-md">
@@ -66,12 +80,14 @@ const OrderAdmin = () => {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order, index) => (
+                {currentOrders.map((order, index) => (
                   <tr
                     key={order._id + index + "order"}
                     className="border-t hover:bg-gray-100"
                   >
-                    <td className="py-3 px-4">{index + 1}</td>
+                    <td className="py-3 px-4">
+                      {(currentPage - 1) * itemsPerPage + index + 1}
+                    </td>
                     <td className="py-3 px-4">{order.userId?.name || "N/A"}</td>
                     <td className="py-3 px-4">
                       {order.userId?.email || "N/A"}
@@ -103,9 +119,9 @@ const OrderAdmin = () => {
             </table>
           </div>
 
-          {/* Hiển thị dạng danh sách trên thiết bị nhỏ */}
+          {/* Mobile view */}
           <div className="sm:hidden space-y-4">
-            {orders.map((order, index) => (
+            {currentOrders.map((order, index) => (
               <div
                 key={order._id + index + "order-mobile"}
                 className="bg-white shadow-md rounded-lg p-4"
@@ -140,6 +156,27 @@ const OrderAdmin = () => {
                 </p>
               </div>
             ))}
+          </div>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-center items-center gap-4 py-4">
+            <button
+              onClick={() => handlePageChange(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-gray-300 rounded disabled:bg-gray-200"
+            >
+              Prev
+            </button>
+            <span>
+              Page {currentPage} of {Math.ceil(orders.length / itemsPerPage)}
+            </span>
+            <button
+              onClick={() => handlePageChange(currentPage + 1)}
+              disabled={currentPage === Math.ceil(orders.length / itemsPerPage)}
+              className="px-4 py-2 bg-gray-300 rounded disabled:bg-gray-200"
+            >
+              Next
+            </button>
           </div>
         </div>
       )}
