@@ -41,6 +41,14 @@ const SummaryApi = {
     url: "/api/user/update-user",
     method: "put",
   },
+  updateUser: {
+    url: "/api/user/update-user",
+    method: "put",
+  },
+  createUser: {
+    url: "/api/user/create-user",
+    method: "post",
+  },
   addCategory: {
     url: "/api/category/add-category",
     method: "post",

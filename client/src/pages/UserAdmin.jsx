@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import SummaryApi from "../common/SummaryApi";
-import AxiosToastError from "../utils/AxiosToastError";
+import React, { useState, useEffect } from "react";
 import Axios from "../utils/Axios";
+import toast from "react-hot-toast";
 import { HiPencil } from "react-icons/hi";
 import { MdDelete } from "react-icons/md";
-import toast from "react-hot-toast";
+import AxiosToastError from "../utils/AxiosToastError";
+import SummaryApi from "../common/SummaryApi";
+import UploadUserModel from "../components/UploadUserModel";
 import EditUser from "../components/EditUser";
-
 const UserAdmin = () => {
   const [userData, setUserData] = useState([]);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isAddUserModalOpen, setAddUserModalOpen] = useState(false); // Added state to handle modal
 
   const fetchUserData = async () => {
     try {
@@ -29,7 +30,7 @@ const UserAdmin = () => {
 
   const handleEdit = (user) => {
     setSelectedUser(user);
-    setEditModalOpen(true); // Mở modal
+    setEditModalOpen(true);
   };
 
   const handleDelete = async (userId) => {
@@ -50,9 +51,17 @@ const UserAdmin = () => {
     }
   };
 
+  const openAddUserModal = () => {
+    setAddUserModalOpen(true); // Open add user modal
+  };
+
   const closeEditModal = () => {
     setEditModalOpen(false);
     setSelectedUser(null);
+  };
+
+  const closeAddUserModal = () => {
+    setAddUserModalOpen(false); // Close add user modal
   };
 
   useEffect(() => {
@@ -61,10 +70,10 @@ const UserAdmin = () => {
 
   return (
     <section className="">
-      <div className="p-2 \bg-white shadow-md flex items-center justify-between">
+      <div className="p-2 bg-white shadow-md flex items-center justify-between">
         <h1 className="text-2xl font-semibold">User</h1>
         <button
-          // onClick={() => setOpenAddSubCategory(true)}
+          onClick={openAddUserModal} // Open Add User Modal on click
           className="text-sm border border-primary-200 hover:bg-primary-200 px-3 py-1 rounded"
         >
           Add User
@@ -134,7 +143,15 @@ const UserAdmin = () => {
         </table>
       </div>
 
-      {/* Render Modal */}
+      {/* Render AddUserModal */}
+      {isAddUserModalOpen && (
+        <UploadUserModel
+          close={closeAddUserModal}
+          fetchUserData={fetchUserData}
+        />
+      )}
+
+      {/* Render EditUser Modal */}
       {isEditModalOpen && selectedUser && (
         <EditUser
           close={closeEditModal}

@@ -1,12 +1,13 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
-const generatedAccessToken = async(userId)=>{
-    const token = await jwt.sign({ id : userId},
-        process.env.SECRET_KEY_ACCESS_TOKEN,
-        { expiresIn : '5h'}
-    )
+const generatedAccessToken = async (userId) => {
+  const token = await jwt.sign(
+    { id: userId },
+    process.env.SECRET_KEY_ACCESS_TOKEN,
+    { expiresIn: "5h" }
+  );
 
-    return token
-}
+  return token;
+};
 
-export default generatedAccessToken
+export default generatedAccessToken;

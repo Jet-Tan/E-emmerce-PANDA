@@ -582,8 +582,8 @@ export async function deleteUser(request, response) {
 
 export async function updateUser(request, response) {
   try {
-    const userId = request.userId; // Lấy `userId` từ token hoặc request
-    const updates = request.body; // Dữ liệu cập nhật từ body của yêu cầu
+    const userId = request.userId;
+    const updates = request.body;
 
     if (!userId) {
       return response.status(400).json({
@@ -601,12 +601,29 @@ export async function updateUser(request, response) {
       });
     }
 
-    // Tìm và cập nhật người dùng
+    // Kiểm tra email trùng lặp (nếu có cập nhật email)
+    if (updates.email) {
+      const currentUser = await UserModel.findById(userId);
+      if (currentUser.email !== updates.email) {
+        const existingEmailUser = await UserModel.findOne({
+          email: updates.email,
+        });
+        if (existingEmailUser) {
+          return response.status(400).json({
+            message: "Email is already in use by another user",
+            error: true,
+            success: false,
+          });
+        }
+      }
+    }
+
+    // Cập nhật thông tin người dùng
     const updatedUser = await UserModel.findByIdAndUpdate(
-      userId,
-      { $set: updates }, // Chỉ cập nhật các trường được truyền
-      { new: true, runValidators: true } // Trả về document đã cập nhật
-    ).select("-password -refresh_token"); // Không trả về trường nhạy cảm
+      userId, // Tìm người dùng bằng userId
+      { $set: updates }, // Cập nhật các trường dữ liệu
+      { new: true, runValidators: true } // Trả về dữ liệu đã cập nhật, chạy validate
+    ).select("-password -refresh_token"); // Không trả về password và refresh_token
 
     if (!updatedUser) {
       return response.status(404).json({
@@ -625,9 +642,63 @@ export async function updateUser(request, response) {
   } catch (error) {
     console.error("Error updating user:", error);
     return response.status(500).json({
-      message: "Something is wrong",
+      message: "Something went wrong",
       error: true,
       success: false,
+    });
+  }
+}
+
+export async function createUserController(req, res) {
+  try {
+    const { name, email, password, role } = req.body;
+
+    // Kiểm tra các trường bắt buộc có trong yêu cầu
+    if (!name || !email || !password) {
+      return res.status(400).json({
+        message: "Name, email, and password are required.",
+        success: false,
+        error: true,
+      });
+    }
+
+    // Kiểm tra xem email đã tồn tại hay chưa
+    const existingUser = await UserModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        message: "Email is already registered.",
+        success: false,
+        error: true,
+      });
+    }
+
+    // Mã hóa mật khẩu
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+
+    // Tạo đối tượng người dùng mới
+    const newUser = new UserModel({
+      name,
+      email,
+      password: hashedPassword,
+      role,
+    });
+
+    // Lưu người dùng vào cơ sở dữ liệu
+    const savedUser = await newUser.save();
+
+    // Gửi phản hồi
+    return res.status(201).json({
+      message: "User created successfully",
+      success: true,
+      data: savedUser,
+    });
+  } catch (error) {
+    console.error("Error during user creation:", error); // Ghi chi tiết lỗi
+    return res.status(500).json({
+      message: "Server Error",
+      success: false,
+      error: error.message || error,
     });
   }
 }

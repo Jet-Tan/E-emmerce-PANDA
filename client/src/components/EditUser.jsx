@@ -3,6 +3,7 @@ import { IoClose } from "react-icons/io5";
 import Axios from "../utils/Axios";
 import toast from "react-hot-toast";
 import AxiosToastError from "../utils/AxiosToastError";
+import SummaryApi from "../common/SummaryApi";
 
 const EditUser = ({ close, userData, fetchUserData }) => {
   const [userDetails, setUserDetails] = useState({
@@ -14,7 +15,7 @@ const EditUser = ({ close, userData, fetchUserData }) => {
     mobile: userData.mobile || "",
     role: userData.role || "USER",
   });
-
+  console.log(userDetails);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserDetails((prev) => ({ ...prev, [name]: value }));
@@ -46,8 +47,7 @@ const EditUser = ({ close, userData, fetchUserData }) => {
 
     try {
       const response = await Axios({
-        method: "PUT",
-        url: "/api/user/update",
+        ...SummaryApi.updateUser,
         data: userDetails,
       });
 

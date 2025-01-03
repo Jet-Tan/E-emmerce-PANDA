@@ -14,6 +14,7 @@ import {
   userAll,
   deleteUser,
   updateUser,
+  createUserController,
 } from "../controllers/user.controller.js";
 import auth from "../middleware/auth.js";
 import upload from "../middleware/multer.js";
@@ -34,4 +35,5 @@ userRouter.get("/user-details", auth, userDetails);
 userRouter.get("/user-all", auth, admin, userAll);
 userRouter.delete("/delete-user", auth, admin, deleteUser);
 userRouter.put("/update-user", auth, admin, updateUser);
+userRouter.post("/create-user", auth, admin, createUserController);
 export default userRouter;

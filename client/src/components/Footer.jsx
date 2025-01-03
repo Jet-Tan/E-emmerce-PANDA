@@ -9,7 +9,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="border-t bg-gray-100">
+    <footer className="border-t bg-gray-100 mt-4">
       <div className="container mx-auto py-8 px-4 text-center lg:text-left flex flex-col lg:flex-row lg:justify-between gap-6">
         {/* Left Section */}
         <div>
